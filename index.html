@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Constructor Villa</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    background: #0a0a0a;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    padding: 20px;
+    border-bottom: 1px solid #333;
+}
+
+.header h1 {
+    font-family: 'Pacifico', cursive;
+    color: #facc15;
+}
+
+/* LAYOUT */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* BUILDER */
+.builder {
+    flex: 1;
+    padding: 20px;
+}
+
+/* OPCIONES */
+.option {
+    background: #111;
+    border: 1px solid #333;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.option:hover {
+    border-color: #facc15;
+}
+
+/* RESUMEN */
+.summary {
+    flex: 1;
+    padding: 20px;
+    border-left: 1px solid #333;
+}
+
+.summary h2 {
+    color: #f97316;
+}
+
+.total {
+    font-size: 20px;
+    color: #facc15;
+}
+
+/* BOTON */
+button {
+    background: #f97316;
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Arma tu hamburguesa</h1>
+    <p>Hazla a tu manera</p>
+</div>
+
+<div class="container">
+
+    <!-- BUILDER -->
+    <div class="builder">
+
+        <h2>1. Elige tu base</h2>
+
+        <div class="option" onclick="selectBase('Villa',105)">
+            Villa ($105) — Jamón, queso, cebolla caramelizada
+        </div>
+
+        <div class="option" onclick="selectBase('BBQ',155)">
+            BBQ ($155) — BBQ, tocino, aros de cebolla
+        </div>
+
+        <div class="option" onclick="selectBase('Mexicana',130)">
+            Mexicana ($130) — Guacamole, chorizo
+        </div>
+
+        <h2>2. Agrega extras</h2>
+
+        <div class="option" onclick="addExtra('Tocino',35)">Tocino (+$35)</div>
+        <div class="option" onclick="addExtra('Piña',15)">Piña (+$15)</div>
+        <div class="option" onclick="addExtra('Aros',20)">Aros de cebolla (+$20)</div>
+        <div class="option" onclick="addExtra('BBQ',5)">Extra BBQ (+$5)</div>
+
+    </div>
+
+    <!-- RESUMEN -->
+    <div class="summary">
+
+        <h2>Tu hamburguesa</h2>
+
+        <p id="base">Base: ninguna</p>
+        <p id="extras">Extras: ninguno</p>
+
+        <div class="total">
+            Total: $<span id="total">0</span>
+        </div>
+
+        <button onclick="ordenar()">Ordenar por WhatsApp</button>
+
+    </div>
+
+</div>
+
+<script>
+let total = 0;
+let base = "";
+let extras = [];
+
+function selectBase(name, price){
+    base = name;
+    total = price + extras.reduce((a,b)=>a+b.price,0);
+
+    document.getElementById("base").innerText = "Base: " + name;
+    updateTotal();
+}
+
+function addExtra(name, price){
+    extras.push({name, price});
+    total += price;
+
+    document.getElementById("extras").innerText =
+        "Extras: " + extras.map(e => e.name).join(", ");
+
+    updateTotal();
+}
+
+function updateTotal(){
+    document.getElementById("total").innerText = total;
+}
+
+function ordenar(){
+    let mensaje = "Pedido:%0A" +
+                  "Hamburguesa: " + base + "%0A" +
+                  "Extras: " + extras.map(e=>e.name).join(", ") + "%0A" +
+                  "Total: $" + total;
+
+    window.open("https://wa.me/5210000000000?text=" + mensaje);
+}
+</script>
+
+</body>
+</html>
